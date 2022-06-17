@@ -4,8 +4,16 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 const Blog = require('./models/blog')
 const { MONGODB_URI, PORT } = require('./utils/config')
+const logger = require('./utils/logger')
 
+logger.info('Connecting to MongoDB')
 mongoose.connect(MONGODB_URI)
+  .then(() => {
+    logger.info('Connected to MongoDB')
+  })
+  .catch(error => {
+    logger.error('ERROR: ', error)
+  })
 
 app.use(cors())
 app.use(express.json())
