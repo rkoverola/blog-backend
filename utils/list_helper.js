@@ -1,10 +1,22 @@
+let _ = require('lodash')
+
 const dummy = () => {
   return 1
 }
 
+// NOTE: It was a stupid idea to do this with higher order functions tbh, you like that readability?
+const mostBlogs = (blogs) => {
+  const grouped = _.groupBy(blogs, b => b.author)
+  const blogsByAuthor = _.mapValues(grouped, v => v.length)
+  const blogsByAuthorArray = Object.entries(blogsByAuthor)
+  const rankedAuthors = blogsByAuthorArray.sort((a, b) => b[1] - a[1])
+  const bestAuthor = _.head(rankedAuthors)
+  return { author: bestAuthor[0], blogs: bestAuthor[1] }
+}
+
 const totalLikes = (blogs) => {
   const likes = blogs.map(b => b.likes)
-  const sum = likes.reduce((previous, current) => previous + current, 0)
+  const sum = _.sum(likes)
   return sum
 }
 
@@ -17,5 +29,5 @@ const favoriteBlog = (blogs) => {
   return blogCopy[0]
 }
 
-const listHelper = { dummy, totalLikes, favoriteBlog }
+const listHelper = { dummy, totalLikes, favoriteBlog, mostBlogs }
 module.exports = listHelper
