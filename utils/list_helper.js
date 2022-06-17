@@ -8,5 +8,14 @@ const totalLikes = (blogs) => {
   return sum
 }
 
-const listHelper = { dummy, totalLikes }
+const favoriteBlog = (blogs) => {
+  if(blogs.length === 0) {
+    throw new TypeError('Cannot find favorite in empty list')
+  }
+  let blogCopy = [...blogs]
+  blogCopy.sort((a, b) => b.likes - a.likes)
+  return blogCopy[0]
+}
+
+const listHelper = { dummy, totalLikes, favoriteBlog }
 module.exports = listHelper
