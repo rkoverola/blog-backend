@@ -14,6 +14,16 @@ const mostBlogs = (blogs) => {
   return { author: bestAuthor[0], blogs: bestAuthor[1] }
 }
 
+// NOTE: You will pay for this sinful implementation
+const mostLikes = (blogs) => {
+  const grouped = _.groupBy(blogs, b => b.author)
+  const likesByAuthor = _.mapValues(grouped, v => _.sum(v.map(o => o.likes)))
+  const likesByAuthorArray = Object.entries(likesByAuthor)
+  const rankedAuthors = likesByAuthorArray.sort((a, b) => b[1] - a[1])
+  const bestAuthor = _.head(rankedAuthors)
+  return { author: bestAuthor[0], likes: bestAuthor[1] }
+}
+
 const totalLikes = (blogs) => {
   const likes = blogs.map(b => b.likes)
   const sum = _.sum(likes)
@@ -29,5 +39,5 @@ const favoriteBlog = (blogs) => {
   return blogCopy[0]
 }
 
-const listHelper = { dummy, totalLikes, favoriteBlog, mostBlogs }
+const listHelper = { dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes }
 module.exports = listHelper
