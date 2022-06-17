@@ -2,8 +2,8 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-  "title": "Node.js",
+  "title": "How to use routers in node.js",
   "author": "Jaska Node",
   "url": "www.foop.com",
-  "likes": 180
+  "likes": 1192
 }
