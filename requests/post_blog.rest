@@ -2,8 +2,8 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-  "title": "VS Studio REST client for dummies",
-  "author": "Juho Rest",
-  "url": "www.doop.com",
-  "likes": 10
+  "title": "Node.js",
+  "author": "Jaska Node",
+  "url": "www.foop.com",
+  "likes": 180
 }
