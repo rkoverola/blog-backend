@@ -30,6 +30,22 @@ describe('blog api', () => {
       expect(processedBlog.id).toBeDefined()
     }
   })
+
+  test('given database then should be able to post valid blog', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const validBlog = {
+      title: 'Testing is fun',
+      author: 'Supertest',
+      url: 'www.test.com',
+      likes: 150
+    }
+    const validBlogObject = new Blog(validBlog)
+    await validBlogObject.save()
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(blogsAtStart.length + 1)
+    const titles = blogsAtEnd.map(b => b.title)
+    expect(titles).toContain('Testing is fun')
+  })
 })
 
 afterAll( () => {
