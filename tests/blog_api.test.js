@@ -74,6 +74,17 @@ describe('blog api', () => {
       .send(invalidBlog)
       .expect(400)
   })
+
+  test('given database then should be able to delete a specific post', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToDelete = blogsAtStart[1]
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+    const blogsAtEnd = await helper.blogsInDb()
+    const ids = blogsAtEnd.map(b => b.id)
+    expect(ids).not.toContain(blogToDelete.id)
+  })
 })
 
 afterAll( () => {
