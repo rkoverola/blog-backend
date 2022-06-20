@@ -85,6 +85,19 @@ describe('blog api', () => {
     const ids = blogsAtEnd.map(b => b.id)
     expect(ids).not.toContain(blogToDelete.id)
   })
+
+  test('given database then should be able to update a specific post', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    let blogToUpdate = blogsAtStart[1]
+    blogToUpdate.likes = 69
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(blogToUpdate)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+    const blogAtEnd = await Blog.findById(blogToUpdate.id)
+    expect(blogAtEnd.likes).toBe(69)
+  })
 })
 
 afterAll( () => {
