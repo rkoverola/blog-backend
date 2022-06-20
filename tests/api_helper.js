@@ -28,7 +28,7 @@ const initialBlogs = [
 ]
 
 const blogsInDb = async () => {
-  const blogs = await Blog.findAll({})
+  const blogs = await Blog.find({})
   return blogs
 }
 

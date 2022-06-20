@@ -19,6 +19,17 @@ describe('blog api', () => {
     const response = await api.get('/api/blogs')
     expect(response.body).toHaveLength(helper.initialBlogs.length)
   })
+
+  test('given a blogs from database then id property should be defined', async () => {
+    console.log('Entering test')
+    const blogs = await helper.blogsInDb()
+    for(let blog of blogs) {
+      const processedBlog = JSON.parse(JSON.stringify(blog))
+      console.log('Blog is', blog)
+      console.log('pBlog is', processedBlog)
+      expect(processedBlog.id).toBeDefined()
+    }
+  })
 })
 
 afterAll( () => {
