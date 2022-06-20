@@ -46,6 +46,21 @@ describe('blog api', () => {
     const titles = blogsAtEnd.map(b => b.title)
     expect(titles).toContain('Testing is fun')
   })
+
+  test('given a blog with missing likes property then should save with default 0', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const invalidBlog = {
+      title: 'This post has no likes',
+      author: 'Supertest',
+      url: 'www.test.com'
+    }
+    const invalidBlogObject = new Blog(invalidBlog)
+    await invalidBlogObject.save()
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(blogsAtStart.length + 1)
+    const addedBlog = blogsAtEnd.find(b => b.title === 'This post has no likes')
+    expect(addedBlog.likes).toBe(0)
+  })
 })
 
 afterAll( () => {
