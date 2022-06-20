@@ -21,12 +21,9 @@ describe('blog api', () => {
   })
 
   test('given a blogs from database then id property should be defined', async () => {
-    console.log('Entering test')
     const blogs = await helper.blogsInDb()
     for(let blog of blogs) {
       const processedBlog = JSON.parse(JSON.stringify(blog))
-      console.log('Blog is', blog)
-      console.log('pBlog is', processedBlog)
       expect(processedBlog.id).toBeDefined()
     }
   })
@@ -39,8 +36,11 @@ describe('blog api', () => {
       url: 'www.test.com',
       likes: 150
     }
-    const validBlogObject = new Blog(validBlog)
-    await validBlogObject.save()
+    await api
+      .post('/api/blogs')
+      .send(validBlog)
+      .expect(201)
+
     const blogsAtEnd = await helper.blogsInDb()
     expect(blogsAtEnd).toHaveLength(blogsAtStart.length + 1)
     const titles = blogsAtEnd.map(b => b.title)
@@ -54,12 +54,25 @@ describe('blog api', () => {
       author: 'Supertest',
       url: 'www.test.com'
     }
-    const invalidBlogObject = new Blog(invalidBlog)
-    await invalidBlogObject.save()
+    await api
+      .post('/api/blogs')
+      .send(invalidBlog)
+      .expect(201)
+
     const blogsAtEnd = await helper.blogsInDb()
     expect(blogsAtEnd).toHaveLength(blogsAtStart.length + 1)
     const addedBlog = blogsAtEnd.find(b => b.title === 'This post has no likes')
     expect(addedBlog.likes).toBe(0)
+  })
+
+  test('given blog with missing title and url then posting yields code 400', async () => {
+    const invalidBlog = {
+      author: 'Dumbass',
+    }
+    await api
+      .post('/api/blogs')
+      .send(invalidBlog)
+      .expect(400)
   })
 })
 
