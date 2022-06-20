@@ -1,5 +1,6 @@
 const { MONGODB_URI } = require('./utils/config')
 const express = require('express')
+require('express-async-errors')
 const cors = require('cors')
 const mongoose = require('mongoose')
 const logger = require('./utils/logger')
@@ -7,10 +8,15 @@ const logger = require('./utils/logger')
 const blogRouter = require('./controllers/blogs')
 const { errorHandler, requestLogger } = require('./utils/middleware')
 
-logger.info('Connecting to MongoDB')
+// NOTE: Do not log url because it contains password
+const destination = MONGODB_URI.includes('testBlogDB')
+  ? 'TEST MongoDB'
+  : 'PRODUCTION MongoDB'
+
+logger.info('Connecting to', destination)
 mongoose.connect(MONGODB_URI)
   .then(() => {
-    logger.info('Connected to MongoDB')
+    logger.info('Connected to', destination)
   })
   .catch(error => {
     logger.error('ERROR: ', error)
