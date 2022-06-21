@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 const logger = require('./utils/logger')
 
 const blogRouter = require('./controllers/blogs')
+const usersRouter = require('./controllers/users')
 const { errorHandler, requestLogger } = require('./utils/middleware')
 
 // NOTE: Do not log url because it contains password
@@ -29,6 +30,7 @@ app.use(express.json())
 app.use(requestLogger)
 
 app.use('/api/blogs', blogRouter)
+app.use('/api/users', usersRouter)
 
 app.use(errorHandler)
 
