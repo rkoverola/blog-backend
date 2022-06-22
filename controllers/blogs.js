@@ -50,6 +50,7 @@ blogRouter.delete('/:id', async (request, response) => {
   }
 })
 
+// FIXME: This can be done without authorization
 blogRouter.put('/:id', async (request, response) => {
   const result = await Blog.findByIdAndUpdate(request.params.id, request.body)
   response.json(result)
