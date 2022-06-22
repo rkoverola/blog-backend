@@ -2,7 +2,7 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-  "title": "Remember to import your app and connect it to the server",
+  "title": "This blog should definitely belong to darian",
   "author": "Pekka Express",
   "url": "www.poop.com",
   "likes": 11931023
