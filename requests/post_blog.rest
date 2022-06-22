@@ -1,9 +1,10 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRhcmlhbiIsImlkIjoiNjJiMmM3MjViZjhmNzY0OTFjMmY5MDI2IiwiaWF0IjoxNjU1ODk0NTA2fQ.6gkGZZwXCKYBn6DB6BQfRYy6Ebr75aTdOKZyJTALk2s
 
 {
-  "title": "This blog should definitely belong to darian",
+  "title": "The previous blog was supposed to go through actually",
   "author": "Pekka Express",
   "url": "www.poop.com",
-  "likes": 11931023
+  "likes": 1
 }
