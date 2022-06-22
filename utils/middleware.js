@@ -1,4 +1,6 @@
 const logger = require('./logger')
+const jwt = require('jsonwebtoken')
+const User = require('../models/user')
 
 const errorHandler = (error, request, response, next) => {
   logger.error(error)
@@ -28,5 +30,19 @@ const tokenExtractor = (request, response, next) => {
   next()
 }
 
-const middleware = { errorHandler, requestLogger, tokenExtractor }
+// NOTE: Async middleware?
+const userExtractor = async (request, response, next) => {
+  const authorization = request.get('authorization')
+  if(authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    const token = authorization.substring(7)
+    const decodedToken = jwt.verify(token, process.env.SECRET)
+    const user = await User.findById(decodedToken.id)
+    if(user) {
+      request.user = user
+    }
+  }
+  next()
+}
+
+const middleware = { errorHandler, requestLogger, tokenExtractor, userExtractor }
 module.exports = middleware

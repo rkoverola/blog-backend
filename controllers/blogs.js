@@ -11,12 +11,10 @@ blogRouter.get('/', async (request, response) => {
 })
 
 blogRouter.post('/', async (request, response) => {
-  const token = request.token
-  const decodedToken = jwt.verify(token, process.env.SECRET)
-  if(!decodedToken.id) {
+  const user = request.user
+  if(!user) {
     return response.status(401).json({ error: 'Invalid token' })
   }
-  const user = await User.findById(decodedToken.id)
   const blogObject = {
     title: request.body.title,
     author: request.body.author,
@@ -32,18 +30,20 @@ blogRouter.post('/', async (request, response) => {
 })
 
 blogRouter.delete('/:id', async (request, response) => {
-  const token = request.token
-  const decodedToken = jwt.verify(token, process.env.SECRET)
-  console.log('Decoded token is', decodedToken)
-  if(!decodedToken.id) {
+  const user = request.user
+  if(!user) {
     return response.status(401).json({ error: 'Invalid token' })
   }
   const blog = await Blog.findById(request.params.id)
   if(!blog) {
+    user.blogs = user.blogs.filter(b => b._id.toString() !== request.params.id)
+    await user.save()
     return response.status(204).end()
   }
-  if(blog.user.toString() === decodedToken.id.toString()) {
+  if(blog.user.toString() === user.id.toString()) {
     await Blog.findByIdAndDelete(request.params.id)
+    user.blogs = user.blogs.filter(b => b._id.toString() !== request.params.id)
+    await user.save()
     return response.status(204).end()
   } else {
     return response.status(401).json({ error: 'Only creator of blog can delete it' })

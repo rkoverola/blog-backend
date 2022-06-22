@@ -1,9 +1,9 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpyZXN0IiwiaWQiOiI2MmIyZmRjZGM5MmU4ODc1YTQ0ZjlkYzciLCJpYXQiOjE2NTU4OTc2MDF9.46olAPZfri7XplHbg3iubETZMt4MCseAQN2elMVg3qw
+Authorization: bearer
 
 {
-  "title": "This blog belongs to Juha",
+  "title": "This blog belongs to Juha three",
   "author": "Juha REST",
   "url": "www.poop.com",
   "likes": 1
