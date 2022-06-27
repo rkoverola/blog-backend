@@ -51,8 +51,12 @@ blogRouter.delete('/:id', async (request, response) => {
 })
 
 // FIXME: This can be done without authorization
+// NOTE: FindByIdAndUpdate returns object before it was changed in response by default
 blogRouter.put('/:id', async (request, response) => {
-  const result = await Blog.findByIdAndUpdate(request.params.id, request.body)
+  const options = { returnDocument: 'after' }
+  const result = await Blog
+    .findByIdAndUpdate(request.params.id, request.body, options)
+    .populate('user')
   response.json(result)
 })
 
