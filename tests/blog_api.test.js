@@ -173,9 +173,17 @@ describe('given empty database with valid user', () => {
       .set('Authorization', `bearer ${token}`)
       .send(validBlog)
       .expect(201)
-    const blogToUpdate = postResponse.body
 
-    blogToUpdate.likes = 69
+    // NOTE: This test was changed because post now populates response
+    const blogToUpdate = {
+      id: postResponse.body.id,
+      title: postResponse.body.title,
+      author: postResponse.body.author,
+      url: postResponse.body.url,
+      likes: 69,
+      user: postResponse.body.user.id
+    }
+
     await api
       .put(`/api/blogs/${blogToUpdate.id}`)
       .send(blogToUpdate)
